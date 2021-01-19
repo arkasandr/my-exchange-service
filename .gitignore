@@ -21,3 +21,23 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+../.idea
+.idea
+
+*.iml
+
+### VS Code ###
+.vscode/
+
