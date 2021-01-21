@@ -16,12 +16,13 @@ const routes = [
     path: '/task',
     component: Task
   }
-
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
+  linkActiveClass: 'active',
+  linkExactActiveClass: 'active'
 })
 
 export default router

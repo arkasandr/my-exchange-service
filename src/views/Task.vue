@@ -1,9 +1,9 @@
 <template>
   <div class="card">
-    <h2>Название задачи</h2>
+    <h2>{{ title }}</h2>
     <p><strong>Статус</strong>: <AppStatus :type="'done'" /></p>
-    <p><strong>Дэдлайн</strong>: {{ new Date().toLocaleDateString() }}</p>
-    <p><strong>Описание</strong>: Описание задачи</p>
+    <p><strong>Дэдлайн</strong>: {{ date }}</p>
+    <p><strong>Описание</strong>: {{ description }}</p>
     <div>
       <button class="btn">Взять в работу</button>
       <button class="btn primary">Завершить</button>
@@ -11,7 +11,7 @@
     </div>
   </div>
   <h3 class="text-white center">
-    Задачи с id = <strong>Tут АЙДИ</strong> нет.
+    Задачи с id = <strong>{{ idx }}</strong> нет.
   </h3>
 </template>
 
@@ -19,6 +19,7 @@
 import AppStatus from '../components/AppStatus'
 
 export default {
+  props: ['idx', 'title', 'date', 'description'],
   components: { AppStatus }
 }
 </script>
