@@ -33,31 +33,17 @@ export default createStore({
 
   actions: {
     async getAllTasks (context) {
-      try {
-        const response = await axios.get(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks.json`)
-        if (!response.data) {
-          throw new Error('Задачи отсутствуют')
-        }
+      const response = (await axios.get(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks.json`))
+      if (response.data) {
         context.commit('tasks', Object.values(response.data))
-      } catch (e) {
-        console.log('error get')
+        console.log('success get', Object.values(response.data))
       }
     },
 
     async addNewTask (context, task) {
-      try {
-        await fetch(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks/${task.idx}.json`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(task)
-        })
-        context.commit('addNewTask', task)
-        console.log('success adding')
-      } catch (e) {
-        console.log('error add')
-      }
+      await axios.put(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks/${task.idx}.json`, task)
+      context.commit('addNewTask', task)
+      console.log('success adding')
     },
 
     async updateTaskStatus (context, { type, taskId }) {
