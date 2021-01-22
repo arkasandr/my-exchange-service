@@ -1,5 +1,5 @@
 <template>
-  <span class="badge" :class="status.class">{{status.name}}</span>
+  <span class="badge" :class="status.class">{{ status.name }}</span>
 </template>
 
 <script>
@@ -14,9 +14,9 @@ export default {
       } else if (props.type === 'done') {
         return { name: 'Выполнено', class: 'primary' }
       } else if (props.type === 'cancelled') {
-        return { name: 'В работе', class: 'warning' }
+        return { name: 'Отменено', class: 'danger' }
       } else if (props.type === 'pending') {
-        return { name: 'Активно', class: 'danger' }
+        return { name: 'В работе', class: 'warning' }
       }
     })
 

@@ -18,6 +18,12 @@ export default createStore({
     },
     addNewTask (state, task) {
       state.tasks.push(task)
+    },
+    updateTaskStatus (state, { taskId, type }) {
+      console.log('updateTaskStatus')
+      const task = state.tasks.filter(t => t.idx === parseInt(taskId.value))
+      task[0].status = type
+      console.log('updateTaskStatus', task[0])
     }
   },
 
@@ -29,17 +35,15 @@ export default createStore({
           throw new Error('Задачи отсутствуют')
         }
         context.commit('tasks', Object.values(response.data))
-        console.log('tasks', Object.values(response.data))
       } catch (e) {
         console.log('error')
       }
     },
 
     async addNewTask (context, task) {
-      console.log('task add', task)
       try {
-        await fetch(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks.json`, {
-          method: 'POST',
+        await fetch(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks/${task.idx}.json`, {
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -50,6 +54,14 @@ export default createStore({
       } catch (e) {
         console.log('error add')
       }
+    },
+
+    async updateTaskStatus (context, { type, taskId }) {
+      console.log('task status update', taskId.value, type)
+      context.commit('updateTaskStatus', { type, taskId })
+      const task = context.state.tasks.filter(t => t.idx === parseInt(taskId.value))
+      console.log('new task will be ', task)
+      await axios.patch(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks/${taskId.value}.json`, task[0])
     }
 
   },

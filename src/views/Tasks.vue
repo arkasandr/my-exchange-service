@@ -30,6 +30,7 @@ export default {
     const store = useStore()
     const tasks = computed(() => store.getters.tasks)
     const sumActive = computed(() => store.getters.tasks.filter(e => e.status === 'active').length)
+
     return {
       tasks,
       sumActive

@@ -6,10 +6,29 @@
     </p>
     <p><strong>Дэдлайн</strong>: {{ current.date }}</p>
     <p><strong>Описание</strong>: {{ current.description }}</p>
+
     <div>
-      <button class="btn">Взять в работу</button>
-      <button class="btn primary">Завершить</button>
-      <button class="btn danger">Отменить</button>
+      <button
+        class="btn"
+        :disabled="current.status === 'pending'"
+        @click="updateTaskStatus('pending')"
+      >
+        {{ current.status === 'cancelled' ? 'Сделать активной': 'Взять в работу'}}
+      </button>
+      <button
+        class="btn primary"
+        :disabled="current.status === 'done'|| 'cancelled'"
+        @click="updateTaskStatus('done')"
+      >
+        Завершить
+      </button>
+      <button
+        class="btn danger"
+        :disabled="current.status === 'cancelled'"
+        @click="updateTaskStatus('cancelled')"
+      >
+        Отменить
+      </button>
     </div>
   </div>
   <h3 class="text-white center" v-else>
@@ -20,7 +39,7 @@
 <script>
 import AppStatus from '../components/AppStatus'
 import { useStore } from 'vuex'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -31,14 +50,19 @@ export default {
     const tasks = computed(() => store.getters.tasks)
     const current = computed(() => store.getters.tasks.find(e => e.idx === parseInt(taskId.value)))
 
-    onMounted(async () => {
-      await console.log('tasks from store', tasks.value, 'taskId.value', taskId, 'current', current.value)
-    })
+    async function updateTaskStatus (type) {
+      if (current.value.status === 'cancelled' && type === 'pending') {
+        type = 'active'
+        await store.dispatch('updateTaskStatus', { taskId, type })
+      }
+      await store.dispatch('updateTaskStatus', { taskId, type })
+    }
 
     return {
       taskId,
       current,
-      tasks
+      tasks,
+      updateTaskStatus
     }
   },
   components: { AppStatus }
