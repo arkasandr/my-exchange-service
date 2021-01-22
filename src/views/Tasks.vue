@@ -1,11 +1,11 @@
 <template>
   <h1 class="text-white center" v-if=!tasks.length>Задач пока нет</h1>
   <template v-else>
-    <h3 class="text-white">Всего активных задач: 0</h3>
+    <h3 class="text-white">Всего активных задач: {{ sumActive }}</h3>
     <div class="card" v-for="item in tasks" :key="item.idx">
       <h2 class="card-title">
         {{ item.title }}
-        <AppStatus :type="'done'"/>
+        <AppStatus :type="item.status"/>
       </h2>
       <p>
         <strong>
@@ -29,9 +29,10 @@ export default {
   setup () {
     const store = useStore()
     const tasks = computed(() => store.getters.tasks)
-
+    const sumActive = computed(() => store.getters.tasks.filter(e => e.status === 'active').length)
     return {
-      tasks
+      tasks,
+      sumActive
     }
   },
   components: { AppStatus }

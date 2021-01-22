@@ -29,6 +29,7 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import moment from 'moment'
 
 export default {
   setup () {
@@ -44,7 +45,8 @@ export default {
         idx: Date.now(),
         title: title.value,
         date: date.value,
-        description: description.value
+        description: description.value,
+        status: moment(date.value).endOf('day').isAfter() ? 'active' : 'cancelled'
       }
       await store.dispatch('addNewTask', task)
       await router.push('/')

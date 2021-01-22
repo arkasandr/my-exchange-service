@@ -2,7 +2,7 @@
   <div class="card" v-if="current">
     <h2>{{ current.title }}</h2>
     <p><strong>Статус</strong>:
-      <AppStatus :type="'done'"/>
+      <AppStatus :type="current.status"/>
     </p>
     <p><strong>Дэдлайн</strong>: {{ current.date }}</p>
     <p><strong>Описание</strong>: {{ current.description }}</p>
