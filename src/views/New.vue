@@ -18,7 +18,7 @@
 
     <button class="btn primary"
             :disabled="disableNewTask"
-            @click="saveNewTask"
+            @click="add"
     >
       Создать</button>
   </form>
@@ -27,42 +27,27 @@
 <script>
 
 import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
-  props: ['tasks'],
-  // emits:['save-task'],
   setup () {
+    const router = useRouter()
     const idx = ref('')
     const title = ref('')
     const date = ref('')
     const description = ref('')
+    const store = useStore()
 
-    async function saveTask () {
-      try {
-        await fetch(process.env.VUE_APP_ENV_DB_TASKS + '/tasks.json', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            idx: Date.now(),
-            title: title.value,
-            date: date.value,
-            description: description.value
-          })
-        })
-        title.value = ''
-        date.value = ''
-        description.value = ''
-        // this.resume.push({ type: type, content: content })
-      } catch (e) {
-        console.log(e, 'error')
-        // this.alert = {
-        //   type: 'danger',
-        //   title: 'Ошибка!',
-        //   text: e.message
-        // }
+    async function addNewTask () {
+      const task = {
+        idx: Date.now(),
+        title: title.value,
+        date: date.value,
+        description: description.value
       }
+      await store.dispatch('addNewTask', task)
+      await router.push('/')
     }
 
     const disableNewTask = computed(() => {
@@ -75,7 +60,7 @@ export default {
       date,
       description,
       disableNewTask,
-      saveNewTask: saveTask
+      add: addNewTask
     }
   }
 }

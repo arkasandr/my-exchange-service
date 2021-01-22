@@ -13,7 +13,7 @@ const routes = [
     component: New
   },
   {
-    path: '/task',
+    path: '/task/:index?',
     component: Task
   }
 ]
