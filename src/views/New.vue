@@ -20,7 +20,8 @@
             :disabled="disableNewTask"
             @click="add"
     >
-      Создать</button>
+      Создать
+    </button>
   </form>
 </template>
 

@@ -20,10 +20,14 @@ export default createStore({
       state.tasks.push(task)
     },
     updateTaskStatus (state, { taskId, type }) {
-      console.log('updateTaskStatus')
       const task = state.tasks.filter(t => t.idx === parseInt(taskId.value))
       task[0].status = type
-      console.log('updateTaskStatus', task[0])
+    },
+    deleteTask (state, index) {
+      const id = state.tasks.findIndex(t => t.idx === index)
+      if (id > -1) {
+        state.tasks.splice(id, 1)
+      }
     }
   },
 
@@ -36,7 +40,7 @@ export default createStore({
         }
         context.commit('tasks', Object.values(response.data))
       } catch (e) {
-        console.log('error')
+        console.log('error get')
       }
     },
 
@@ -57,11 +61,14 @@ export default createStore({
     },
 
     async updateTaskStatus (context, { type, taskId }) {
-      console.log('task status update', taskId.value, type)
       context.commit('updateTaskStatus', { type, taskId })
       const task = context.state.tasks.filter(t => t.idx === parseInt(taskId.value))
-      console.log('new task will be ', task)
       await axios.patch(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks/${taskId.value}.json`, task[0])
+    },
+
+    async deleteTask (context, index) {
+      context.commit('deleteTask', index)
+      await axios.delete(`${process.env.VUE_APP_ENV_DB_TASKS}/tasks/${index}.json`)
     }
 
   },

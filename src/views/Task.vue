@@ -17,7 +17,7 @@
       </button>
       <button
         class="btn primary"
-        :disabled="current.status === 'done'|| 'cancelled'"
+        :disabled="current.status === 'done' || current.status === 'cancelled'"
         @click="updateTaskStatus('done')"
       >
         Завершить

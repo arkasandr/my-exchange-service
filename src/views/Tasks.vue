@@ -15,6 +15,10 @@
         </strong>
       </p>
       <button class="btn primary" @click="$router.push('/task/'+ item.idx)">Посмотреть</button>
+      <button class="btn danger" @click="deleteTask(item.idx)">
+        <font-awesome-icon icon="trash"/>
+      </button>
+
     </div>
   </template>
 </template>
@@ -31,9 +35,14 @@ export default {
     const tasks = computed(() => store.getters.tasks)
     const sumActive = computed(() => store.getters.tasks.filter(e => e.status === 'active').length)
 
+    async function deleteTask (index) {
+      await store.dispatch('deleteTask', index)
+    }
+
     return {
       tasks,
-      sumActive
+      sumActive,
+      deleteTask
     }
   },
   components: { AppStatus }
